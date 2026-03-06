@@ -7,7 +7,7 @@ use tower_http::cors::{Any, CorsLayer};
 use tracing::info;
 
 #[derive(Debug, Clone)]
-struct AppConfig {
+pub struct AppConfig {
     traefik_api_url: String,
     port: u16,
 }
@@ -42,6 +42,7 @@ async fn main() {
 
     let app = Router::new()
         .route("/health", get(handlers::health))
+        .route("/api/apps", get(handlers::get_apps))
         .layer(cors)
         .with_state(config.clone());
 
