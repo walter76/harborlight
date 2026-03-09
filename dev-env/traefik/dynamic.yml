@@ -1,0 +1,35 @@
+http:
+  routers:
+    app-alpha:
+      rule: "Host(`alpha.localhost`)"
+      entryPoints:
+        - web
+      service: app-alpha
+
+    app-beta:
+      rule: "Host(`beta.localhost`)"
+      entryPoints:
+        - web
+      service: app-beta
+
+    app-gamma:
+      rule: "Host(`gamma.localhost`)"
+      entryPoints:
+        - web
+      service: app-gamma
+
+  services:
+    app-alpha:
+      loadBalancer:
+        servers:
+          - url: "http://app-alpha:80"
+
+    app-beta:
+      loadBalancer:
+        servers:
+          - url: "http://app-beta:80"
+
+    app-gamma:
+      loadBalancer:
+        servers:
+          - url: "http://app-gamma:80"
