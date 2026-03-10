@@ -6,7 +6,7 @@ services:
       - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
       - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
     ports:
-      - "80:80"       # HTTP traffic
+      - "8081:80"       # HTTP traffic
       - "8080:8080"   # Traefik dashboard & API
     networks:
       - traefik-net
