@@ -80,7 +80,22 @@ npm run preview
 
 # Linting
 npm run lint
+
+# Docker
+docker build -t harborlight-app .
 ```
+
+### Containers (PowerShell — run from repo root)
+```powershell
+# Build both containers
+.\scripts\build-containers.ps1
+
+# Or individually
+docker build -t harborlight-backend src\harborlight-backend
+docker build -t harborlight-app src\harborlight-app
+```
+
+The frontend nginx container proxies `/api` and `/health` to a container named `harborlight-backend:8083`. Both must be on the same Docker network.
 
 ## Key Implementation Details
 

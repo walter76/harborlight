@@ -63,3 +63,33 @@ curl http://localhost:8083/api/apps
 cd src/harborlight-backend
 cargo test
 ```
+
+## Frontend
+
+The frontend is a React/Vite app served by nginx in production.
+
+**Run (dev, requires backend running):**
+```bash
+cd src/harborlight-app
+npm install
+npm run dev
+```
+
+The dev server starts on http://localhost:5173 and proxies `/api` and `/health` to the backend.
+
+## Docker
+
+Build both containers with the provided PowerShell script:
+
+```powershell
+.\scripts\build-containers.ps1
+```
+
+Or build individually:
+
+```powershell
+docker build -t harborlight-backend src\harborlight-backend
+docker build -t harborlight-app src\harborlight-app
+```
+
+The frontend container (nginx, port 80) proxies `/api` and `/health` to a backend container named `harborlight-backend` on port 8083. Both containers must be on the same Docker network.
