@@ -1,0 +1,64 @@
+services:
+
+  # ── Traefik ───────────────────────────────────────────────────────────────────
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    volumes:
+      - ./dev-env/traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./dev-env/traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+    ports:
+      - "8081:80"     # HTTP traffic
+      - "8080:8080"   # Traefik dashboard & API
+    networks:
+      - traefik-net
+
+  # ── Dummy apps ────────────────────────────────────────────────────────────────
+  app-alpha:
+    image: nginx:alpine
+    container_name: app-alpha
+    networks:
+      - traefik-net
+
+  app-beta:
+    image: nginx:alpine
+    container_name: app-beta
+    networks:
+      - traefik-net
+
+  app-gamma:
+    image: nginx:alpine
+    container_name: app-gamma
+    networks:
+      - traefik-net
+
+  # ── Harborlight backend ───────────────────────────────────────────────────────
+  harborlight-backend:
+    build: ./src/harborlight-backend
+    container_name: harborlight-backend
+    environment:
+      TRAEFIK_API_URL: http://traefik:8080
+      PORT: "8083"
+      WEB_APPS_HTTP_PORT: "8081"   # Traefik HTTP is on 8081 on the host
+      RUST_LOG: info
+    ports:
+      - "8083:8083"
+    depends_on:
+      - traefik
+    networks:
+      - traefik-net
+
+  # ── Harborlight frontend ──────────────────────────────────────────────────────
+  harborlight-app:
+    build: ./src/harborlight-app
+    container_name: harborlight-app
+    ports:
+      - "5173:80"
+    depends_on:
+      - harborlight-backend
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    driver: bridge

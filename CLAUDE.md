@@ -85,7 +85,18 @@ npm run lint
 docker build -t harborlight-app .
 ```
 
-### Containers (PowerShell — run from repo root)
+### Full environment (Docker Compose — run from repo root)
+```powershell
+# Start everything (Traefik + dummy apps + backend + frontend)
+docker compose up --build
+
+# Stop
+docker compose down
+```
+
+The `docker-compose.yml` at the repo root includes all services on the `traefik-net` network. The backend is configured with `TRAEFIK_API_URL=http://traefik:8080` and `WEB_APPS_HTTP_PORT=8081` to match the dev Traefik port mapping.
+
+### Containers (build only)
 ```powershell
 # Build both containers
 .\scripts\build-containers.ps1
@@ -94,8 +105,6 @@ docker build -t harborlight-app .
 docker build -t harborlight-backend src\harborlight-backend
 docker build -t harborlight-app src\harborlight-app
 ```
-
-The frontend nginx container proxies `/api` and `/health` to a container named `harborlight-backend:8083`. Both must be on the same Docker network.
 
 ## Key Implementation Details
 

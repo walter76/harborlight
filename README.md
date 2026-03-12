@@ -5,29 +5,36 @@ clickable card grid. Built with Rust and React.
 
 ## Dev Environment
 
-The dev environment spins up a local Traefik instance with three dummy nginx services using Docker Compose.
+The full dev environment spins up Traefik, three dummy nginx services, and the harborlight backend and frontend — all via Docker Compose.
 
 **Prerequisites:** Docker Desktop running on Windows.
 
 **Start:**
 ```bat
-dev-env\start.bat
+docker compose up --build
 ```
 
 **Stop:**
 ```bat
-docker compose -f dev-env\docker-compose.yml down
+docker compose down
 ```
 
 Once running:
 
 | URL | Description |
 |-----|-------------|
+| http://localhost:5173 | Harborlight frontend |
+| http://localhost:8083/api/apps | Harborlight backend API |
 | http://localhost:8080/dashboard/ | Traefik dashboard |
 | http://localhost:8080/api/http/routers | Traefik router API (JSON) |
 | http://alpha.localhost:8081 | Dummy app alpha |
 | http://beta.localhost:8081 | Dummy app beta |
 | http://gamma.localhost:8081 | Dummy app gamma |
+
+> **Traefik-only** (without harborlight containers):
+> ```bat
+> dev-env\start.bat
+> ```
 
 ## Backend
 
