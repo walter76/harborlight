@@ -27,7 +27,7 @@ Harborlight is a self-hosted services dashboard for Traefik that automatically d
 ### Data Flow
 ```
 Traefik API → Rust Backend → REST API → React Frontend
-             (Port 8080)   (Port 3001)   (Port 5173)
+             (Port 8080)   (Port 8083)   (Port 5173)
 ```
 
 The backend queries Traefik's `/api/http/routers` endpoint, filters out internal routes (containing "@internal" or "dashboard"), and transforms them into `WebApp` objects with:
@@ -57,7 +57,7 @@ docker build -t harborlight-backend .
 
 **Environment variables**:
 - `TRAEFIK_API_URL`: Traefik API endpoint (default: `http://localhost:8080`)
-- `PORT`: Backend server port (default: `8080`)
+- `PORT`: Backend server port (default: `8083`)
 - `RUST_LOG`: Logging level (e.g., `info`, `debug`)
 
 ### Frontend (React)
