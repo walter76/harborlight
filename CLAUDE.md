@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-Harborlight is a self-hosted services dashboard for Traefik that automatically discovers HTTP routers and displays them as a clean, clickable card grid. The project is a full-stack application with a Rust backend and React frontend in a monorepo structure.
+Harborlight is a self-hosted web app dashboard for Traefik that automatically discovers HTTP routers and displays them as a clean, clickable card grid. The project is a full-stack application with a Rust backend and React frontend in a monorepo structure.
 
 ## Architecture
 
@@ -19,7 +19,7 @@ Harborlight is a self-hosted services dashboard for Traefik that automatically d
 ### Frontend (React)
 - **Location**: `src/harborlight-app/`
 - **Build tool**: Vite
-- **Purpose**: Interactive UI for displaying discovered services
+- **Purpose**: Interactive UI for displaying discovered web apps
 - Path-based routing (served under Traefik)
 - Auto-refresh of the routers list
 - Show: name, route, status, upstream health
@@ -126,4 +126,4 @@ Backend uses permissive CORS (allow any origin/method/header) for development co
 
 ## Project Status
 
-Current state: Basic infrastructure established. Backend can query Traefik and serve API. Frontend project is set up but needs UI implementation for displaying the discovered services as a card grid.
+Current state: Fully implemented. Backend queries Traefik and serves the API. Frontend displays discovered web apps as a clickable card grid with status indicators and auto-refresh.
