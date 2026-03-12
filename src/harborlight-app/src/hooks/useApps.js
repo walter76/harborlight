@@ -14,23 +14,22 @@ function isNavigable(rule_part) {
   return !!(rule_part.FullUrl || rule_part.Host)
 }
 
-export function useServices() {
-  const [services, setServices] = useState([])
+export function useApps() {
+  const [apps, setApps] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-  async function fetchServices() {
+  async function fetchApps() {
     try {
       const res = await fetch('/api/apps')
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       const data = await res.json()
-      console.log('Fetched services payload:', data)
       const normalized = data.map(s => ({
         ...s,
         url: deriveUrl(s.scheme, s.rule_part),
         navigable: isNavigable(s.rule_part),
       }))
-      setServices(normalized)
+      setApps(normalized)
       setError(null)
     } catch (err) {
       setError(err.message)
@@ -40,10 +39,10 @@ export function useServices() {
   }
 
   useEffect(() => {
-    fetchServices()
-    const interval = setInterval(fetchServices, 30000)
+    fetchApps()
+    const interval = setInterval(fetchApps, 30000)
     return () => clearInterval(interval)
   }, [])
 
-  return { services, loading, error }
+  return { apps, loading, error }
 }

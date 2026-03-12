@@ -1,9 +1,9 @@
 import Box from '@mui/joy/Box'
-import ServiceCard from './ServiceCard'
+import AppCard from './AppCard'
 import SkeletonCard from './SkeletonCard'
 import ErrorBanner from './ErrorBanner'
 
-export default function ServiceGrid({ services, loading, error }) {
+export default function AppGrid({ apps, loading, error }) {
   const gridStyle = {
     display: 'grid',
     gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
@@ -24,7 +24,7 @@ export default function ServiceGrid({ services, loading, error }) {
 
   return (
     <Box sx={gridStyle}>
-      {services.map(s => <ServiceCard key={s.id} service={s} />)}
+      {apps.map(app => <AppCard key={app.id} app={app} />)}
     </Box>
   )
 }

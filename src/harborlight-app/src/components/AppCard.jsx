@@ -5,8 +5,8 @@ import Button from '@mui/joy/Button'
 import Stack from '@mui/joy/Stack'
 import HealthChip from './HealthChip'
 
-export default function ServiceCard({ service }) {
-  const { name, url, status, navigable } = service
+export default function AppCard({ app }) {
+  const { name, url, status, navigable } = app
 
   return (
     <Card variant="outlined">
