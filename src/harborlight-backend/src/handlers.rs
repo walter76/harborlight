@@ -88,7 +88,7 @@ async fn fetch_apps(config: &AppConfig) -> Result<Vec<WebApp>> {
                 "http"
             };
 
-            let port = if scheme == "https" { 443 } else { config.web_apps_http_port };
+            let port = if scheme == "https" { config.web_apps_https_port } else { config.web_apps_http_port };
 
             let display_name = humanize_name(&name);
 

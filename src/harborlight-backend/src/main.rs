@@ -11,6 +11,7 @@ pub struct AppConfig {
     traefik_api_url: String,
     port: u16,
     pub web_apps_http_port: u16,
+    pub web_apps_https_port: u16,
 }
 
 impl AppConfig {
@@ -25,11 +26,16 @@ impl AppConfig {
             .unwrap_or_else(|_| "80".to_string())
             .parse()
             .unwrap_or(80);
+        let web_apps_https_port = std::env::var("WEB_APPS_HTTPS_PORT")
+            .unwrap_or_else(|_| "443".to_string())
+            .parse()
+            .unwrap_or(443);
 
         Self {
             traefik_api_url,
             port,
             web_apps_http_port,
+            web_apps_https_port,
         }
     }
 }
