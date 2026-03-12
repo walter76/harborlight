@@ -10,6 +10,7 @@ use tracing::info;
 pub struct AppConfig {
     traefik_api_url: String,
     port: u16,
+    pub web_apps_http_port: u16,
 }
 
 impl AppConfig {
@@ -20,10 +21,15 @@ impl AppConfig {
             .unwrap_or_else(|_| "8083".to_string())
             .parse()
             .unwrap_or(8083);
+        let web_apps_http_port = std::env::var("WEB_APPS_HTTP_PORT")
+            .unwrap_or_else(|_| "80".to_string())
+            .parse()
+            .unwrap_or(80);
 
         Self {
             traefik_api_url,
             port,
+            web_apps_http_port,
         }
     }
 }

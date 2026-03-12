@@ -45,6 +45,7 @@ The server starts on port 8083 by default. Override with environment variables:
 |----------|---------|-------------|
 | `TRAEFIK_API_URL` | `http://localhost:8080` | Traefik API endpoint |
 | `PORT` | `8083` | Backend listen port |
+| `WEB_APPS_HTTP_PORT` | `80` | Host port for HTTP web apps (set if Traefik HTTP is not on port 80) |
 | `RUST_LOG` | — | Log level (`info`, `debug`, etc.) |
 
 **Test the API endpoints:**

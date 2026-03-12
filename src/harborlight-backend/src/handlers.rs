@@ -50,6 +50,7 @@ pub struct WebApp {
     id: String,
     name: String,
     scheme: String,
+    port: u16,
     rule_part: RulePart,
     status: String,
     entry_points: Vec<String>,
@@ -87,12 +88,15 @@ async fn fetch_apps(config: &AppConfig) -> Result<Vec<WebApp>> {
                 "http"
             };
 
+            let port = if scheme == "https" { 443 } else { config.web_apps_http_port };
+
             let display_name = humanize_name(&name);
 
             Some(WebApp {
                 id: name.clone(),
                 name: display_name,
                 scheme: scheme.to_string(),
+                port,
                 rule_part,
                 status,
                 entry_points,

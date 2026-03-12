@@ -1,9 +1,11 @@
 import { useState, useEffect } from 'react'
 
-function deriveUrl(scheme, rule_part) {
+function deriveUrl(scheme, port, rule_part) {
+  const defaultPort = scheme === 'https' ? 443 : 80
+  const portSuffix = port !== defaultPort ? `:${port}` : ''
   if (!rule_part) return null
-  if (rule_part.FullUrl) return `${scheme}://${rule_part.FullUrl}`
-  if (rule_part.Host) return `${scheme}://${rule_part.Host}`
+  if (rule_part.FullUrl) return `${scheme}://${rule_part.FullUrl}${portSuffix}`
+  if (rule_part.Host) return `${scheme}://${rule_part.Host}${portSuffix}`
   if (rule_part.PathPrefix) return rule_part.PathPrefix
   if (rule_part.Unknown) return rule_part.Unknown
   return null
@@ -26,7 +28,7 @@ export function useApps() {
       const data = await res.json()
       const normalized = data.map(s => ({
         ...s,
-        url: deriveUrl(s.scheme, s.rule_part),
+        url: deriveUrl(s.scheme, s.port, s.rule_part),
         navigable: isNavigable(s.rule_part),
       }))
       setApps(normalized)

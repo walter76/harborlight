@@ -58,6 +58,7 @@ docker build -t harborlight-backend .
 **Environment variables**:
 - `TRAEFIK_API_URL`: Traefik API endpoint (default: `http://localhost:8080`)
 - `PORT`: Backend server port (default: `8083`)
+- `WEB_APPS_HTTP_PORT`: Host port for HTTP web apps (default: `80`; set if Traefik HTTP is not on port 80)
 - `RUST_LOG`: Logging level (e.g., `info`, `debug`)
 
 ### Frontend (React)
