@@ -39,21 +39,21 @@ cd src/harborlight-backend
 cargo run
 ```
 
-The server starts on port 8080 by default. Override with environment variables:
+The server starts on port 8083 by default. Override with environment variables:
 
 | Variable | Default | Description |
 |----------|---------|-------------|
 | `TRAEFIK_API_URL` | `http://localhost:8080` | Traefik API endpoint |
-| `PORT` | `8080` | Backend listen port |
+| `PORT` | `8083` | Backend listen port |
 | `RUST_LOG` | — | Log level (`info`, `debug`, etc.) |
 
 **Test the API endpoints:**
 ```bash
 # Health check
-curl http://localhost:8080/health
+curl http://localhost:8083/health
 
 # Discovered apps (from Traefik routers)
-curl http://localhost:8080/api/apps
+curl http://localhost:8083/api/apps
 ```
 
 **Run tests:**
