@@ -20,6 +20,9 @@ Harborlight is a self-hosted services dashboard for Traefik that automatically d
 - **Location**: `src/harborlight-app/`
 - **Build tool**: Vite
 - **Purpose**: Interactive UI for displaying discovered services
+- Path-based routing (served under Traefik)
+- Auto-refresh of the routers list
+- Show: name, route, status, upstream health
 
 ### Data Flow
 ```
@@ -97,6 +100,13 @@ The `humanize_name()` function cleans Traefik router names by:
 
 ### CORS Configuration
 Backend uses permissive CORS (allow any origin/method/header) for development convenience. Consider restricting this for production deployments.
+
+### Frontend Conventions
+- Functional components, hooks only
+- No class components
+- Keep components small and composable
+- Always run `npm run build` after changes to verify
+- Use JavaScript and React MUI Joy
 
 ## Dependencies
 
