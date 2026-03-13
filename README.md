@@ -41,7 +41,7 @@ Once running:
 The backend queries the Traefik API and exposes a REST API for the frontend.
 
 **Run (requires dev environment running):**
-```bash
+```powershell
 cd src/harborlight-backend
 cargo run
 ```
@@ -57,16 +57,16 @@ The server starts on port 8083 by default. Override with environment variables:
 | `RUST_LOG` | — | Log level (`info`, `debug`, etc.) |
 
 **Test the API endpoints:**
-```bash
+```powershell
 # Health check
-curl http://localhost:8083/health
+Invoke-RestMethod http://localhost:8083/health
 
 # Discovered apps (from Traefik routers)
-curl http://localhost:8083/api/apps
+Invoke-RestMethod http://localhost:8083/api/apps
 ```
 
 **Run tests:**
-```bash
+```powershell
 cd src/harborlight-backend
 cargo test
 ```
@@ -76,7 +76,7 @@ cargo test
 The frontend is a React/Vite app served by nginx in production.
 
 **Run (dev, requires backend running):**
-```bash
+```powershell
 cd src/harborlight-app
 npm install
 npm run dev
