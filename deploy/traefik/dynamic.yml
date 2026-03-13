@@ -1,0 +1,34 @@
+http:
+  middlewares:
+    redirect-to-https:
+      redirectScheme:
+        scheme: https
+        permanent: true
+
+  routers:
+    harborlight:
+      rule: "Host(`harborlight.example.com`)"  # <-- REPLACE: your Harborlight public hostname
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      service: harborlight
+
+    my-app:
+      rule: "Host(`myapp.example.com`)"  # <-- REPLACE: your app's public hostname
+      entryPoints:
+        - websecure
+      tls:
+        certResolver: letsencrypt
+      service: my-app
+
+  services:
+    harborlight:
+      loadBalancer:
+        servers:
+          - url: "http://harborlight-app:80"
+
+    my-app:
+      loadBalancer:
+        servers:
+          - url: "http://my-app:80"  # <-- REPLACE: your app container name

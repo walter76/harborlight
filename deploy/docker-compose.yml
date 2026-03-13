@@ -1,0 +1,55 @@
+services:
+
+  # ── Traefik ───────────────────────────────────────────────────────────────────
+  traefik:
+    image: traefik:v3.3
+    container_name: traefik
+    volumes:
+      - ./traefik/traefik.yml:/etc/traefik/traefik.yml:ro
+      - ./traefik/dynamic.yml:/etc/traefik/dynamic.yml:ro
+      - traefik-acme:/etc/traefik  # persists acme.json across restarts
+    ports:
+      - "80:80"
+      - "443:443"
+      # Port 8080 (dashboard/API) is intentionally NOT published to the host.
+      # harborlight-backend reaches it via the internal Docker network.
+    networks:
+      - traefik-net
+
+  # ── Harborlight backend ───────────────────────────────────────────────────────
+  harborlight-backend:
+    image: harborlight-backend
+    container_name: harborlight-backend
+    environment:
+      TRAEFIK_API_URL: http://traefik:8080  # <-- REPLACE: if Traefik API is elsewhere
+      PORT: "8083"
+      WEB_APPS_HTTP_PORT: "80"    # <-- REPLACE: host port Traefik serves HTTP on (usually 80)
+      WEB_APPS_HTTPS_PORT: "443"  # <-- REPLACE: host port Traefik serves HTTPS on (usually 443)
+      RUST_LOG: info
+    depends_on:
+      - traefik
+    networks:
+      - traefik-net
+
+  # ── Harborlight frontend ──────────────────────────────────────────────────────
+  harborlight-app:
+    image: harborlight-app
+    container_name: harborlight-app
+    depends_on:
+      - harborlight-backend
+    networks:
+      - traefik-net
+
+  # ── Example app ───────────────────────────────────────────────────────────────
+  my-app:
+    image: nginx:alpine
+    container_name: my-app  # <-- REPLACE: your app container name (must match dynamic.yml service URL)
+    networks:
+      - traefik-net
+
+networks:
+  traefik-net:
+    driver: bridge
+
+volumes:
+  traefik-acme:  # named volume so acme.json survives container restarts
