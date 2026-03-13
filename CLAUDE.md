@@ -35,10 +35,15 @@ The backend queries Traefik's `/api/http/routers` endpoint, filters out internal
 - Humanized names (stripped of Traefik suffixes like "@docker", "-router")
 - Detected scheme (http/https based on entry points like "websecure")
 
+## Environment
+
+- **Host (dev and production):** Windows — use PowerShell for all host-side commands and scripts
+- **Containers:** Linux — commands run inside containers via `docker exec` use Linux syntax
+
 ## Development Commands
 
 ### Backend (Rust)
-```bash
+```powershell
 cd src/harborlight-backend
 
 # Development
@@ -63,7 +68,7 @@ docker build -t harborlight-backend .
 - `RUST_LOG`: Logging level (e.g., `info`, `debug`)
 
 ### Frontend (React)
-```bash
+```powershell
 cd src/harborlight-app
 
 # Install dependencies
