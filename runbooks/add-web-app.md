@@ -53,7 +53,7 @@ or equivalent dynamic configuration file).
 
 The app container must be on the same Docker network as Traefik so that Traefik can reach it.
 
-```bash
+```powershell
 # If using docker run
 docker run --network traefik-net --name my-cool-app my-cool-app-image
 
@@ -77,7 +77,7 @@ networks:
 
 ### 2. Add the router and service to `dynamic.yml`
 
-Open the Traefik dynamic configuration file (e.g. `/etc/traefik/dynamic.yml`) and add entries
+Open the Traefik dynamic configuration file (e.g. `C:\traefik\dynamic.yml`) and add entries
 under `http.routers` and `http.services`.
 
 **HTTP app (host-based routing):**
@@ -188,7 +188,7 @@ networks:
 
 ### 2. Start or recreate the service
 
-```bash
+```powershell
 docker compose up -d my-cool-app
 ```
 
@@ -206,8 +206,10 @@ http://<production-server>:8080/dashboard/#/http/routers
 
 You can also query the Traefik API directly:
 
-```bash
-curl http://localhost:8080/api/http/routers | jq '.[] | select(.name | contains("my-cool-app"))'
+```powershell
+Invoke-RestMethod http://localhost:8080/api/http/routers |
+    Where-Object { $_.name -like "*my-cool-app*" } |
+    ConvertTo-Json
 ```
 
 ---

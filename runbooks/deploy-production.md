@@ -64,21 +64,21 @@ Export, copy, and import the images:
 
 ```powershell
 # On build machine — export images to tar files
-docker save harborlight-backend | gzip > harborlight-backend.tar.gz
-docker save harborlight-app     | gzip > harborlight-app.tar.gz
+docker save -o harborlight-backend.tar harborlight-backend
+docker save -o harborlight-app.tar     harborlight-app
 
-# Copy to production server (adjust user/host)
-scp harborlight-backend.tar.gz user@prod-server:/tmp/
-scp harborlight-app.tar.gz     user@prod-server:/tmp/
+# Copy to production server (adjust user/host; Windows OpenSSH uses forward-slash paths)
+scp harborlight-backend.tar user@prod-server:C:/temp/
+scp harborlight-app.tar     user@prod-server:C:/temp/
 ```
 
-```bash
+```powershell
 # On production server — load images
-docker load < /tmp/harborlight-backend.tar.gz
-docker load < /tmp/harborlight-app.tar.gz
+docker load -i C:\temp\harborlight-backend.tar
+docker load -i C:\temp\harborlight-app.tar
 
 # Clean up
-rm /tmp/harborlight-backend.tar.gz /tmp/harborlight-app.tar.gz
+Remove-Item C:\temp\harborlight-backend.tar, C:\temp\harborlight-app.tar
 ```
 
 ### Option B — Private registry
@@ -92,7 +92,7 @@ docker push registry.example.com/harborlight-backend:latest
 docker push registry.example.com/harborlight-app:latest
 ```
 
-```bash
+```powershell
 # On production server — pull
 docker pull registry.example.com/harborlight-backend:latest
 docker pull registry.example.com/harborlight-app:latest
@@ -105,7 +105,7 @@ docker tag registry.example.com/harborlight-app:latest     harborlight-app
 
 ## Step 4 — Create the production compose file (production server)
 
-Create `/opt/harborlight/docker-compose.yml` on the production server. Substitute the values gathered in Step 1.
+Create `C:\harborlight\docker-compose.yml` on the production server. Substitute the values gathered in Step 1.
 
 ```yaml
 services:
@@ -183,8 +183,8 @@ Alternatively, add labels to the `harborlight-app` service in the compose file:
 
 ## Step 6 — Start the containers (production server)
 
-```bash
-cd /opt/harborlight
+```powershell
+cd C:\harborlight
 docker compose up -d
 ```
 
@@ -192,11 +192,11 @@ docker compose up -d
 
 ## Step 7 — Verify the deployment (production server)
 
-```bash
+```powershell
 # Confirm both containers are running
 docker compose ps
 
-# Backend health check (from within the Docker network or via Traefik)
+# Backend health check (runs inside the container)
 docker exec harborlight-backend wget -qO- http://localhost:8083/health
 
 # Backend API — should return a JSON array of discovered apps
@@ -215,11 +215,11 @@ Open the public URL in a browser and confirm Harborlight loads and displays the 
 
 ## Step 8 — Update an existing deployment
 
-```bash
+```powershell
 # 1. Transfer new images to the server (repeat Step 3)
 
 # 2. Restart containers with the new images
-cd /opt/harborlight
+cd C:\harborlight
 docker compose down
 docker compose up -d
 
@@ -232,8 +232,8 @@ docker compose up -d
 
 If the new deployment is broken, restore the previous images and restart:
 
-```bash
-cd /opt/harborlight
+```powershell
+cd C:\harborlight
 
 # Stop current containers
 docker compose down
@@ -247,7 +247,7 @@ docker compose up -d
 ```
 
 > **Tip:** Before each deployment, tag the current running images as `:previous` so rollback is always one step away:
-> ```bash
+> ```powershell
 > docker tag harborlight-backend harborlight-backend:previous
 > docker tag harborlight-app     harborlight-app:previous
 > ```
