@@ -11,15 +11,41 @@
 
 Harborlight runs as two Docker containers alongside an existing Traefik instance on the production server:
 
-```
-Browser → Traefik → harborlight-app (nginx, port 80)
-                         ↓ proxy /api, /health
-                  harborlight-backend (port 8083)
-                         ↓
-                  Traefik API (existing)
+```mermaid
+graph LR
+    Browser --> Traefik
+    Traefik --> App[harborlight-app]
+    App --> Backend[harborlight-backend]
+    Backend --> TraefikAPI[Traefik API]
 ```
 
 The backend must be able to reach the Traefik API endpoint. Both containers must be on the same Docker network so that the frontend nginx can proxy to the backend by container name.
+
+```mermaid
+graph TD
+    Client["<b>Browser / Client</b><br/><i>http://host:8080/...</i>"]
+
+    subgraph DockerHost["<b>Docker Host</b><br/>Windows Desktop · IIS on :80"]
+        subgraph ProxyNet["<b>proxy bridge network</b><br/>shared Docker network · container-to-container routing"]
+          Socket["<b>Docker socket</b><br/>/var/run/docker.sock"]
+
+          Traefik["<b>Traefik</b><br/>Reverse proxy · auto-discovery<br/>host :8088 → :80 / :443"]
+
+          Dashboard["Dashboard<br/>host :8080 → container : 8080"]
+
+          ServiceA["Service A · Harborlight<br/>internal :3000"]
+          ServiceB["Service B · API backend<br/>internal :8080"]
+          ServiceC["Service C · Grafana<br/>internal :3100"]
+        end
+    end
+
+    Client -->|"http://host:8080/..."| Traefik
+    Socket -->|"label discovery"| Traefik
+    Traefik -->|"/app-a"| ServiceA
+    Traefik -->|"/api"| ServiceB
+    Traefik -->|"/grafana"| ServiceC
+    Traefik -->|":8080"| Dashboard
+```
 
 ---
 
